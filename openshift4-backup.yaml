@@ -71,7 +71,7 @@ metadata:
 spec:
   schedule: "56 23 * * *"
   concurrencyPolicy: Forbid
-  successfulJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 14
   failedJobsHistoryLimit: 5
   jobTemplate:
     metadata:
@@ -90,7 +90,7 @@ spec:
               command:
                 - "/bin/bash"
                 - "-c"
-                - oc get no -l node-role.kubernetes.io/master --no-headers -o name | xargs -I {} --  oc debug {} -- bash -c 'chroot /host sudo -E /usr/local/bin/cluster-backup.sh /home/core/backup/ && chroot /host sudo -E find /home/core/backup/ -type f -ctime +"2" -delete'
+                - oc get no -l node-role.kubernetes.io/master --no-headers -o name | xargs -I {} --  oc debug {} -- bash -c 'chroot /host sudo -E /usr/local/bin/cluster-backup.sh /home/core/assets/backup/ && chroot /host sudo -E find /home/core/assets/backup/ -type f -ctime +"14" -delete'
           restartPolicy: "Never"
           terminationGracePeriodSeconds: 30
           activeDeadlineSeconds: 600
