@@ -91,7 +91,7 @@ spec:
                 - "/bin/bash"
                 - "-c"
                 - >
-                  oc get no -l node-role.kubernetes.io/master --no-headers -o name | \
+                  oc get no -l node-role.kubernetes.io/master --no-headers -o name | head -n 1 | \
                   xargs -I {} oc debug {} -- bash -c '\
                   chroot /host /usr/local/bin/cluster-backup.sh /home/core/assets/backup/ && \
                   chroot /host find /home/core/assets/backup/ -type f -ctime +14 -exec rm {} \;'
