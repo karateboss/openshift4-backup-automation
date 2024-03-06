@@ -90,7 +90,11 @@ spec:
               command:
                 - "/bin/bash"
                 - "-c"
-                - oc get no -l node-role.kubernetes.io/master --no-headers -o name | xargs -I {} --  oc debug {} -- bash -c 'chroot /host sudo -E /usr/local/bin/cluster-backup.sh /home/core/assets/backup/ && chroot /host sudo -E find /home/core/assets/backup/ -type f -ctime +"14" -delete'
+                - >
+                  oc get no -l node-role.kubernetes.io/master --no-headers -o name | \
+                  xargs -I {} oc debug {} -- bash -c '\
+                  chroot /host /usr/local/bin/cluster-backup.sh /home/core/assets/backup/ && \
+                  chroot /host find /home/core/assets/backup/ -type f -ctime +14 -exec rm {} \;'
           restartPolicy: "Never"
           terminationGracePeriodSeconds: 30
           activeDeadlineSeconds: 600
